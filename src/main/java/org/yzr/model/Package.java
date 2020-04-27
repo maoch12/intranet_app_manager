@@ -22,6 +22,8 @@ public class Package {
     private String bundleID;
     // 名称
     private String name;
+
+    private String environment;
     // 版本
     private String version;
     // 构建版本
