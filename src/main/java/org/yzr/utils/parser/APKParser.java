@@ -22,15 +22,11 @@ public class APKParser implements PackageParser {
             aPackage.setSize(file.length());
             ApkMeta meta = apkFile.getApkMeta();
             aPackage.setName(meta.getName());
-            String version = meta.getVersionName();
             String buildVersion = meta.getVersionCode() + "";
-            if (version.length() < 1) {
-                version = meta.getPlatformBuildVersionName();
-            }
             if (buildVersion.length() < 1) {
                 buildVersion = meta.getPlatformBuildVersionCode();
             }
-            aPackage.setVersion(version);
+            setVersionAndEnv(meta, aPackage);
             aPackage.setBuildVersion(buildVersion);
             aPackage.setBundleID(meta.getPackageName());
             aPackage.setMinVersion(meta.getMinSdkVersion());
@@ -45,9 +41,29 @@ public class APKParser implements PackageParser {
             }
             apkFile.close();
             return aPackage;
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return null;
     }
+
+    private void setVersionAndEnv(ApkMeta meta, Package aPackage) {
+        String versionName = meta.getVersionName();
+        if (versionName.length() < 1) {
+            versionName = meta.getPlatformBuildVersionName();
+        }
+        String version = "";
+        String environment = "";
+        if (versionName.contains("_")) {
+            String[] ver = versionName.trim().split("_");
+            environment = ver[0];
+            version = ver[1];
+        } else {
+            environment = "prod";
+            version = versionName;
+        }
+        aPackage.setVersion(version);
+        aPackage.setEnvironment(environment);
+    }
+
 }

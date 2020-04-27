@@ -35,6 +35,8 @@ public class AppViewModel {
 
     private String installPath;
 
+    private String environment;
+
     private List<PackageViewModel> packageList;
 
     private PackageViewModel currentPackage;
@@ -52,6 +54,7 @@ public class AppViewModel {
         this.icon =  PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
         Package aPackage = findPackageById(app, null);
         this.version = aPackage.getVersion();
+        this.environment=aPackage.getEnvironment();
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
@@ -71,6 +74,7 @@ public class AppViewModel {
         this.icon =  PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
         Package aPackage = findPackageById(app, packageId);
         this.version = aPackage.getVersion();
+        this.environment=aPackage.getEnvironment();
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();

@@ -21,6 +21,7 @@ public class PackageViewModel {
     private String previewURL;
     private String id;
     private String version;
+    private String environment;
     private String bundleID;
     private String name;
     private long createTime;
@@ -38,6 +39,7 @@ public class PackageViewModel {
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
         this.id = aPackage.getId();
         this.version = aPackage.getVersion();
+        this.environment=aPackage.getEnvironment();
         this.bundleID = aPackage.getBundleID();
         this.name = aPackage.getName();
         this.createTime = aPackage.getCreateTime();

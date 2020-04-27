@@ -1,7 +1,5 @@
 package org.yzr.service;
 
-
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.yzr.dao.AppDao;
@@ -10,11 +8,8 @@ import org.yzr.model.Package;
 import org.yzr.utils.CodeGenerator;
 import org.yzr.utils.PathManager;
 import org.yzr.vo.AppViewModel;
-import org.yzr.vo.PackageViewModel;
-
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
