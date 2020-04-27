@@ -1,9 +1,12 @@
 package org.yzr.dao;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.yzr.model.App;
+
+import java.util.Optional;
 
 public interface AppDao extends CrudRepository<App, String> {
 
@@ -16,4 +19,8 @@ public interface AppDao extends CrudRepository<App, String> {
     @Override
     @Query("select a from App a order by a.currentPackage.createTime desc ")
     Iterable<App> findAll();
+
+    @NotNull
+    @Query("select a from App a where a.id=:id")
+    public Optional<App> findById(@Param("id") String id);
 }

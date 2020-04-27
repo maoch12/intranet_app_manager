@@ -63,6 +63,7 @@ public class APKParser implements PackageParser {
             version = versionName;
         }
         aPackage.setVersion(version);
+        aPackage.setBigVersion(version.substring(0,3));
         aPackage.setEnvironment(environment);
     }
 

@@ -81,6 +81,6 @@ public class PackageService {
             String path = PathManager.getFullPath(aPackage);
             PathManager.deleteDirectory(path);
         }
-
     }
+
 }

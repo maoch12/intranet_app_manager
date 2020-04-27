@@ -24,6 +24,9 @@ public class Package {
     private String name;
 
     private String environment;
+
+    private String bigVersion;
+
     // 版本
     private String version;
     // 构建版本

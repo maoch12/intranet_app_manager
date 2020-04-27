@@ -36,6 +36,7 @@ public class PackageController {
 
     /**
      * 预览页
+     *
      * @param code
      * @param request
      * @return
@@ -50,21 +51,36 @@ public class PackageController {
         return "install";
     }
 
+    //TODO need to test
+    @GetMapping("/{code}/{env}/{bigV}")
+    public String getByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
+                           @PathVariable("bigV") String bigV, HttpServletRequest request) {
+        String id = request.getParameter("id");
+        AppViewModel viewModel = this.appService.findByEnv(env,code,bigV);
+        request.setAttribute("app", viewModel);
+        request.setAttribute("ca_path", this.pathManager.getCAPath());
+        request.setAttribute("basePath", this.pathManager.getBaseURL(false));
+        return "install";
+    }
+
+
     /**
      * 设备列表
+     *
      * @param id
      * @param request
      * @return
      */
     @GetMapping("/devices/{id}")
     public String devices(@PathVariable("id") String id, HttpServletRequest request) {
-        PackageViewModel viewModel= this.packageService.findById(id);
+        PackageViewModel viewModel = this.packageService.findById(id);
         request.setAttribute("app", viewModel);
         return "devices";
     }
 
     /**
      * 安装教程
+     *
      * @param platform
      * @param request
      * @return
@@ -77,6 +93,7 @@ public class PackageController {
 
     /**
      * 上传包
+     *
      * @param file
      * @param request
      * @return
@@ -108,6 +125,7 @@ public class PackageController {
 
     /**
      * 下载文件源文件(ipa 或 apk)
+     *
      * @param id
      * @param response
      */
@@ -117,11 +135,11 @@ public class PackageController {
             Package aPackage = this.packageService.get(id);
             String path = PathManager.getFullPath(aPackage) + aPackage.getFileName();
             File file = new File(path);
-            if(file.exists()){ //判断文件父目录是否存在
+            if (file.exists()) { //判断文件父目录是否存在
                 response.setContentType("application/force-download");
                 // 文件名称转换
                 String fileName = aPackage.getName() + "_" + aPackage.getVersion();
-                String ext =  "." + FilenameUtils.getExtension(aPackage.getFileName());
+                String ext = "." + FilenameUtils.getExtension(aPackage.getFileName());
                 String appName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
                 response.setHeader("Content-Disposition", "attachment;fileName=" + appName + ext);
 
@@ -130,7 +148,7 @@ public class PackageController {
                 FileInputStream fis = new FileInputStream(file);
                 BufferedInputStream bis = new BufferedInputStream(fis);
                 int i = bis.read(buffer);
-                while(i != -1){
+                while (i != -1) {
                     os.write(buffer);
                     i = bis.read(buffer);
                 }
@@ -144,6 +162,7 @@ public class PackageController {
 
     /**
      * 获取 manifest
+     *
      * @param id
      * @param response
      */
@@ -164,6 +183,7 @@ public class PackageController {
 
     /**
      * 获取包二维码
+     *
      * @param id
      * @param response
      */
@@ -182,6 +202,7 @@ public class PackageController {
 
     /**
      * 删除包
+     *
      * @param id
      * @return
      */
@@ -200,6 +221,7 @@ public class PackageController {
 
     /**
      * 转存文件
+     *
      * @param srcFile
      * @return
      */

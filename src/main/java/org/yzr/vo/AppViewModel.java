@@ -27,6 +27,8 @@ public class AppViewModel {
 
     private String version;
 
+    private String bigVersion;
+
     private String buildVersion;
 
     private String minVersion;
@@ -51,10 +53,11 @@ public class AppViewModel {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
-        this.icon =  PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+        this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
         Package aPackage = findPackageById(app, null);
         this.version = aPackage.getVersion();
-        this.environment=aPackage.getEnvironment();
+        this.bigVersion = aPackage.getBigVersion();
+        this.environment = aPackage.getEnvironment();
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
@@ -71,10 +74,28 @@ public class AppViewModel {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
-        this.icon =  PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+        this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
         Package aPackage = findPackageById(app, packageId);
         this.version = aPackage.getVersion();
-        this.environment=aPackage.getEnvironment();
+        this.bigVersion = aPackage.getBigVersion();
+        this.environment = aPackage.getEnvironment();
+        this.buildVersion = aPackage.getBuildVersion();
+        this.shortCode = app.getShortCode();
+        this.name = app.getName();
+        this.installPath = pathManager.getBaseURL(false) + "s/" + app.getShortCode();
+        this.minVersion = aPackage.getMinVersion();
+        this.currentPackage = new PackageViewModel(aPackage, pathManager);
+    }
+
+    public AppViewModel(App app, PathManager pathManager, String environment, String bigVersion) {
+        this.id = app.getId();
+        this.platform = app.getPlatform();
+        this.bundleID = app.getBundleID();
+        this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+        Package aPackage = findPackageByEnv(app, environment, bigVersion);
+        this.version = aPackage.getVersion();
+        this.bigVersion = aPackage.getBigVersion();
+        this.environment = aPackage.getEnvironment();
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
@@ -90,9 +111,32 @@ public class AppViewModel {
                     return aPackage;
                 }
             }
-
         }
         return app.getCurrentPackage();
+    }
+
+    private static Package findPackageByEnv(App app, String environment, String bigVersion) {
+        if (environment != null && bigVersion != null) {
+            for (Package aPackage : app.getPackageList()) {
+                if (aPackage.getBigVersion().equals(bigVersion) && aPackage.getEnvironment().equals(environment)) {
+                    return aPackage;
+                }
+            }
+        }
+        return app.getCurrentPackage();
+    }
+
+    private static List<Package> findPackageListByEnv(App app, String environment, String bigVersion) {
+        if (environment != null && bigVersion != null) {
+            List<Package> packageList = new ArrayList<>();
+            for (Package aPackage : app.getPackageList()) {
+                if (aPackage.getBigVersion().equals(bigVersion) && aPackage.getEnvironment().equals(environment)) {
+                    packageList.add(aPackage);
+                }
+            }
+            return packageList;
+        }
+        return app.getPackageList();
     }
 
     private static List<PackageViewModel> sortPackages(List<Package> packages, PathManager pathManager) {

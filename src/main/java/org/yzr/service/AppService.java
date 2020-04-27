@@ -57,6 +57,7 @@ public class AppService {
         return null;
     }
 
+    //TODO update code value to ios or andriod
     @Transactional
     public App getByPackage(Package aPackage) {
         App app = this.appDao.get(aPackage.getBundleID(), aPackage.getPlatform());
@@ -104,4 +105,13 @@ public class AppService {
         AppViewModel viewModel = new AppViewModel(app, pathManager, packageId);
         return viewModel;
     }
+
+    @Transactional
+    public AppViewModel findByEnv(String env,String code,String bigVersion){
+        App app=this.appDao.findByShortCode(code);
+        AppViewModel viewModel=new AppViewModel(app,pathManager,env,bigVersion);
+        return viewModel;
+    }
+
+
 }

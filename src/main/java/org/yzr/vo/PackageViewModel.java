@@ -21,6 +21,7 @@ public class PackageViewModel {
     private String previewURL;
     private String id;
     private String version;
+    private String bigVersion;
     private String environment;
     private String bundleID;
     private String name;
@@ -42,6 +43,7 @@ public class PackageViewModel {
         this.environment=aPackage.getEnvironment();
         this.bundleID = aPackage.getBundleID();
         this.name = aPackage.getName();
+        this.bigVersion=aPackage.getBigVersion();
         this.createTime = aPackage.getCreateTime();
         this.buildVersion = aPackage.getBuildVersion();
         this.displaySize = String.format("%.2f MB", aPackage.getSize() / (1.0F * FileUtils.ONE_MB));

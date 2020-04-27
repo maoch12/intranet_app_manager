@@ -26,7 +26,7 @@ public class AppController {
 
     @GetMapping("/apps")
     public String apps(HttpServletRequest request) {
-        try{
+        try {
             List<AppViewModel> apps = this.appService.findAll();
             request.setAttribute("apps", apps);
             request.setAttribute("baseURL", this.pathManager.getBaseURL(false));
@@ -44,6 +44,7 @@ public class AppController {
         request.setAttribute("apps", appViewModel.getPackageList());
         return "list";
     }
+
 
     @RequestMapping("/app/delete/{id}")
     @ResponseBody
