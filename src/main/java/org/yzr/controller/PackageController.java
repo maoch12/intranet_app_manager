@@ -56,7 +56,8 @@ public class PackageController {
     public String getByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
                            @PathVariable("bigV") String bigV, HttpServletRequest request) {
         String id = request.getParameter("id");
-        AppViewModel viewModel = this.appService.findByEnv(env,code,bigV);
+        Package aPackage = this.packageService.findPackageByEnvAndBigV(bigV, env);
+        AppViewModel viewModel = this.appService.findPackageByEnvAndBigV(code, aPackage);
         request.setAttribute("app", viewModel);
         request.setAttribute("ca_path", this.pathManager.getCAPath());
         request.setAttribute("basePath", this.pathManager.getBaseURL(false));

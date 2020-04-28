@@ -1,24 +1,19 @@
 package org.yzr.service;
 
 
-import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
-import org.yzr.dao.AppDao;
 import org.yzr.dao.PackageDao;
-import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.utils.ImageUtils;
 import org.yzr.utils.PathManager;
-import org.yzr.utils.ipa.PlistGenerator;
 import org.yzr.utils.parser.ParserClient;
 import org.yzr.vo.PackageViewModel;
-
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.util.List;
 
 @Service
 public class PackageService {
@@ -82,5 +77,29 @@ public class PackageService {
             PathManager.deleteDirectory(path);
         }
     }
+
+    @Transactional
+    public PackageViewModel findTopPackage(String bigVersion, String environment) {
+        Package aPackage = this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
+        PackageViewModel viewModel = new PackageViewModel(aPackage, this.pathManager);
+        return viewModel;
+    }
+
+    @Transactional
+    public Package findPackageByEnvAndBigV(String environment, String bigVersion) {
+        if (environment != null && bigVersion != null) {
+            return this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<Package> findPackageListByEnvAndBigV( String environment, String bigVersion) {
+        if (environment != null && bigVersion != null) {
+            return this.packageDao.findAllByBigVAndEnv(bigVersion, environment);
+        }
+        return null;
+    }
+
 
 }

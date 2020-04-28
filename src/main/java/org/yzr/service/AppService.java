@@ -8,6 +8,7 @@ import org.yzr.model.Package;
 import org.yzr.utils.CodeGenerator;
 import org.yzr.utils.PathManager;
 import org.yzr.vo.AppViewModel;
+
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -27,7 +28,8 @@ public class AppService {
         app1.getCurrentPackage();
         try {
             // 触发级联查询
-            app1.getWebHookList().forEach(webHook -> {});
+            app1.getWebHookList().forEach(webHook -> {
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +52,8 @@ public class AppService {
         Optional<App> optionalApp = this.appDao.findById(appID);
         App app = optionalApp.get();
         if (app != null) {
-            app.getPackageList().forEach(aPackage -> {});
+            app.getPackageList().forEach(aPackage -> {
+            });
             AppViewModel appViewModel = new AppViewModel(app, this.pathManager, true);
             return appViewModel;
         }
@@ -63,17 +66,20 @@ public class AppService {
         App app = this.appDao.get(aPackage.getBundleID(), aPackage.getPlatform());
         if (app == null) {
             app = new App();
-            String shortCode = CodeGenerator.generate(4);
-            while (this.appDao.findByShortCode(shortCode) != null) {
-                shortCode = CodeGenerator.generate(4);
-            }
+//            String shortCode = CodeGenerator.generate(4);
+//            while (this.appDao.findByShortCode(shortCode) != null) {
+//                shortCode = CodeGenerator.generate(4);
+//            }
             BeanUtils.copyProperties(aPackage, app);
+            String shortCode = app.getPlatform();
             app.setShortCode(shortCode);
         } else {
             app.setName(aPackage.getName());
             // 触发级联查询
-            app.getPackageList().forEach(p->{});
-            app.getWebHookList().forEach(webHook -> {});
+            app.getPackageList().forEach(p -> {
+            });
+            app.getWebHookList().forEach(webHook -> {
+            });
         }
         if (app.getPackageList() == null) {
             app.setPackageList(new ArrayList<>());
@@ -95,6 +101,7 @@ public class AppService {
 
     /**
      * 通过 code 和 packageId 查询
+     *
      * @param code
      * @param packageId
      * @return
@@ -107,9 +114,9 @@ public class AppService {
     }
 
     @Transactional
-    public AppViewModel findByEnv(String env,String code,String bigVersion){
-        App app=this.appDao.findByShortCode(code);
-        AppViewModel viewModel=new AppViewModel(app,pathManager,env,bigVersion);
+    public AppViewModel findPackageByEnvAndBigV(String code, Package aPackage) {
+        App app = this.appDao.findByShortCode(code);
+        AppViewModel viewModel = new AppViewModel(app, pathManager, aPackage);
         return viewModel;
     }
 

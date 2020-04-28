@@ -1,15 +1,13 @@
 package org.yzr.vo;
 
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
+import org.yzr.dao.PackageDao;
 import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.utils.PathManager;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import javax.annotation.Resource;
+import java.util.*;
 
 
 @Getter
@@ -42,6 +40,8 @@ public class AppViewModel {
     private List<PackageViewModel> packageList;
 
     private PackageViewModel currentPackage;
+
+
 
     /***
      * 初始化是否加载列表
@@ -87,12 +87,11 @@ public class AppViewModel {
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
 
-    public AppViewModel(App app, PathManager pathManager, String environment, String bigVersion) {
+    public AppViewModel(App app, PathManager pathManager, Package aPackage) {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
-        Package aPackage = findPackageByEnv(app, environment, bigVersion);
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();
         this.environment = aPackage.getEnvironment();
@@ -115,29 +114,6 @@ public class AppViewModel {
         return app.getCurrentPackage();
     }
 
-    private static Package findPackageByEnv(App app, String environment, String bigVersion) {
-        if (environment != null && bigVersion != null) {
-            for (Package aPackage : app.getPackageList()) {
-                if (aPackage.getBigVersion().equals(bigVersion) && aPackage.getEnvironment().equals(environment)) {
-                    return aPackage;
-                }
-            }
-        }
-        return app.getCurrentPackage();
-    }
-
-    private static List<Package> findPackageListByEnv(App app, String environment, String bigVersion) {
-        if (environment != null && bigVersion != null) {
-            List<Package> packageList = new ArrayList<>();
-            for (Package aPackage : app.getPackageList()) {
-                if (aPackage.getBigVersion().equals(bigVersion) && aPackage.getEnvironment().equals(environment)) {
-                    packageList.add(aPackage);
-                }
-            }
-            return packageList;
-        }
-        return app.getPackageList();
-    }
 
     private static List<PackageViewModel> sortPackages(List<Package> packages, PathManager pathManager) {
         // 排序

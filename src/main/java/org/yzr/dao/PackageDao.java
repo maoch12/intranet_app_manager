@@ -1,8 +1,23 @@
 package org.yzr.dao;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+
 import org.yzr.model.Package;
 
-public interface PackageDao extends CrudRepository <Package, String > {
+import java.util.List;
 
+public interface PackageDao extends CrudRepository<Package, String> {
+
+    @Query("SELECT p from Package p where p.bigVersion=:bigVersion and p.environment=:environment")
+   public List<Package> findAllByBigVAndEnv(@Param("bigVersion") String bigVersion,
+                                      @Param("environment") String environment);
+
+
+   public Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(@Param("bigVersion") String bigVersion,
+                                                                     @Param("environment") String environment);
+
+   public List<Package> findAllByBigVersionAndEnvironment(@Param("bigVersion") String bigVersion,
+                                                    @Param("environment") String environment);
 }
