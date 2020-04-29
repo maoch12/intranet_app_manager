@@ -81,7 +81,7 @@
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td class="ng-binding">下载链接:</td>
+                                        <td class="ng-binding">短链接:</td>
                                         <td><span class="ng-binding">[[${baseURL}]][[${app.shortCode}]]/[[${app.environment}]]/[[${app.bigVersion}]]/</span></td>
                                     </tr>
                                     <tr>
@@ -107,7 +107,7 @@
                             <div class="action">
                                 <a class="ng-binding" th:href="'/apps/' + ${app.id}">
                                     <i class="icon-pen"></i> 编辑</a>
-                                <a th:href="@{${baseURL}+'s/'+${app.shortCode}}" target="_blank" class="ng-binding">
+                                <a th:href="@{${baseURL}+${app.shortCode}+'/'+${app.environment}+'/'+${app.bigVersion}+'/'}" target="_blank" class="ng-binding">
                                     <i class="icon-eye"></i> 预览</a>
                                 <button class="btn btn-remove ng-scope" th:data="${app.id}">
                                     <i class="icon icon-trash"></i>
