@@ -103,12 +103,13 @@ public class PackageService {
     }
 
     @Transactional
-    public List<Package> findPackageListByEnvAndBigV(String bigVersion, String environment) {
-        if (environment != null && bigVersion != null) {
-            return this.packageDao.findAllByBigVersionAndEnvironment(bigVersion, environment);
+    public Package findPackageByEnvAndBigVOrPackageId(String bigVersion, String environment, String packageId) {
+        if (!packageId.isEmpty()) {
+            return this.packageDao.findById(packageId).get();
+        } else if (environment != null && bigVersion != null) {
+            return this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
         }
         return null;
     }
-
 
 }
