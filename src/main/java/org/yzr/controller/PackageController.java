@@ -51,7 +51,7 @@ public class PackageController {
         return "install";
     }
 
-    //TODO need to test
+    //美居预览页
     @GetMapping("/{code}/{env}/{bigV}")
     public String getByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
                            @PathVariable("bigV") String bigV, HttpServletRequest request) {

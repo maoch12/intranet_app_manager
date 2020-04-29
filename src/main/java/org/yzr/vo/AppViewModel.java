@@ -87,18 +87,18 @@ public class AppViewModel {
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
 
+    //加载预览页所以需要的数据
     public AppViewModel(App app, PathManager pathManager, Package aPackage) {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
-        this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+        this.icon = PathManager.getRelativePath(aPackage) + "icon.png";
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();
         this.environment = aPackage.getEnvironment();
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-//        this.installPath = pathManager.getBaseURL(false) + "s/" + app.getShortCode();
         this.installPath=pathManager.getBaseURL(false)+app.getShortCode()+"/"+aPackage.getEnvironment()+"/"+aPackage.getBigVersion()+"/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
