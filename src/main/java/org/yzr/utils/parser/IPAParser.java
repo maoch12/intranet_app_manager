@@ -1,6 +1,7 @@
 package org.yzr.utils.parser;
 
 import com.dd.plist.NSDate;
+import com.dd.plist.NSDictionary;
 import org.apache.commons.io.FileUtils;
 import org.yzr.model.Package;
 import org.yzr.utils.PNGConverter;
@@ -34,12 +35,19 @@ public class IPAParser implements PackageParser {
             File ipaFile = new File(filePath);
             long currentTimeMillis = System.currentTimeMillis();
 
+            NSDictionary icons=(NSDictionary) infoPlist.valueForKeyPath("CFBundleIcons");
+            NSDictionary icon=(NSDictionary) icons.get("CFBundlePrimaryIcon");
+            String environment= icon.get("CFBundleIconName").toString().toLowerCase().split("-")[1];
+            aPackage.setEnvironment(environment);
+
             aPackage.setSize(ipaFile.length());
             aPackage.setName(infoPlist.stringValueForPath("CFBundleDisplayName"));
             if (aPackage.getName() == null) {
                 aPackage.setName(infoPlist.stringValueForPath("CFBundleName"));
             }
-            aPackage.setVersion(infoPlist.stringValueForPath("CFBundleShortVersionString"));
+            String version=infoPlist.stringValueForPath("CFBundleShortVersionString");
+            aPackage.setVersion(version);
+            aPackage.setBigVersion(version.substring(0,5));
             aPackage.setBuildVersion(infoPlist.stringValueForPath("CFBundleVersion"));
             aPackage.setBundleID(infoPlist.stringValueForPath("CFBundleIdentifier"));
             aPackage.setMinVersion(infoPlist.stringValueForPath("MinimumOSVersion"));
