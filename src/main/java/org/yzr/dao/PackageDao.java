@@ -14,11 +14,7 @@ public interface PackageDao extends CrudRepository<Package, String> {
     List<Package> findAllByBigVAndEnv(@Param("bigVersion") String bigVersion,
                                       @Param("environment") String environment);
 
-//    Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(@Param("bigVersion") String bigVersion,
-//                                                                     @Param("environment") String environment);
+    Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(String bigVersion, String environment);
 
-     Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(String bigVersion, String environment);
-
-    List<Package> findAllByBigVersionAndEnvironment(@Param("bigVersion") String bigVersion,
-                                                    @Param("environment") String environment);
+    List<Package> findAllByBigVersionAndEnvironment(String bigVersion, String environment);
 }

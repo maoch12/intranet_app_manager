@@ -40,10 +40,10 @@ public class PackageViewModel {
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
         this.id = aPackage.getId();
         this.version = aPackage.getVersion();
-        this.environment=aPackage.getEnvironment();
+        this.environment = aPackage.getEnvironment();
         this.bundleID = aPackage.getBundleID();
         this.name = aPackage.getName();
-        this.bigVersion=aPackage.getBigVersion();
+        this.bigVersion = aPackage.getBigVersion();
         this.createTime = aPackage.getCreateTime();
         this.buildVersion = aPackage.getBuildVersion();
         this.displaySize = String.format("%.2f MB", aPackage.getSize() / (1.0F * FileUtils.ONE_MB));
@@ -55,19 +55,23 @@ public class PackageViewModel {
             String url = pathManager.getBaseURL(true) + "m/" + aPackage.getId();
             try {
                 this.installURL = "itms-services://?action=download-manifest&url=" + URLEncoder.encode(url, "utf-8");
-            } catch (Exception e){e.printStackTrace();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (aPackage.getPlatform().equals("android")) {
             this.iOS = false;
             this.installURL = pathManager.getPackageResourceURL(aPackage, false) + aPackage.getFileName();
         }
-        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getShortCode() + "?id=" + aPackage.getId();
+//        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getShortCode() + "?id=" + aPackage.getId();
+        this.previewURL = pathManager.getBaseURL(false) + aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
+                + aPackage.getBigVersion() + "?id=" + aPackage.getId();
         if (this.isIOS()) {
             if (aPackage.getProvision() == null) {
                 this.type = "内测版";
             } else {
                 if (aPackage.getProvision().isEnterprise()) {
                     this.type = "企业版";
-                } else  {
+                } else {
                     if ("AdHoc".equalsIgnoreCase(aPackage.getProvision().getType())) {
                         this.type = "内测版";
                     } else {
