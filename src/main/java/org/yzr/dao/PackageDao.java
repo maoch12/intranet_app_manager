@@ -11,13 +11,14 @@ import java.util.List;
 public interface PackageDao extends CrudRepository<Package, String> {
 
     @Query("SELECT p from Package p where p.bigVersion=:bigVersion and p.environment=:environment")
-   public List<Package> findAllByBigVAndEnv(@Param("bigVersion") String bigVersion,
+    List<Package> findAllByBigVAndEnv(@Param("bigVersion") String bigVersion,
                                       @Param("environment") String environment);
 
+//    Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(@Param("bigVersion") String bigVersion,
+//                                                                     @Param("environment") String environment);
 
-   public Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(@Param("bigVersion") String bigVersion,
-                                                                     @Param("environment") String environment);
+     Package findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(String bigVersion, String environment);
 
-   public List<Package> findAllByBigVersionAndEnvironment(@Param("bigVersion") String bigVersion,
+    List<Package> findAllByBigVersionAndEnvironment(@Param("bigVersion") String bigVersion,
                                                     @Param("environment") String environment);
 }

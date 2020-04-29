@@ -86,7 +86,7 @@ public class PackageService {
     }
 
     @Transactional
-    public Package findPackageByEnvAndBigV(String environment, String bigVersion) {
+    public Package findPackageByEnvAndBigV(String bigVersion,String environment) {
         if (environment != null && bigVersion != null) {
             return this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
         }

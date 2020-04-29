@@ -41,9 +41,11 @@ public class ApplicationTests {
     public void testFindTop(){
        Package aPackage= this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc("6.4","sit");
         System.out.println(aPackage.getCreateTime());
-//        List<Package> packageList=this.packageDao.findAllByBigVersionAndEnvironment("6.4","sit");
-//        for (Package ap:packageList){
-//            System.out.println(ap.getCreateTime());
-//        }
+    }
+
+    @Test
+    public void testFindTopByService(){
+        Package aPackage=this.packageService.findPackageByEnvAndBigV("6.4","sit");
+        System.out.println(aPackage.getCreateTime());
     }
 }
