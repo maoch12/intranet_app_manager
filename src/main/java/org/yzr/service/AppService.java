@@ -66,10 +66,6 @@ public class AppService {
         App app = this.appDao.get(aPackage.getBundleID(), aPackage.getPlatform());
         if (app == null) {
             app = new App();
-//            String shortCode = CodeGenerator.generate(4);
-//            while (this.appDao.findByShortCode(shortCode) != null) {
-//                shortCode = CodeGenerator.generate(4);
-//            }
             BeanUtils.copyProperties(aPackage, app);
             String shortCode = app.getPlatform();
             app.setShortCode(shortCode);

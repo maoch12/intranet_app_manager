@@ -14,6 +14,8 @@ import org.yzr.vo.PackageViewModel;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,7 +29,13 @@ public class PackageService {
     public Package buildPackage(String filePath) {
         Package aPackage = ParserClient.parse(filePath);
         try {
-            String fileName = aPackage.getPlatform() + "." + FilenameUtils.getExtension(filePath);
+            String env = aPackage.getEnvironment();
+            String environment = env.equals("prod") ? "" : env + "_";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm");
+            String createTime = sdf.format(new Date(aPackage.getCreateTime()));
+
+            String fileName = "meiju_" + environment + aPackage.getVersion() + "_"
+                    + aPackage.getBuildVersion() + "_" + createTime + "." + FilenameUtils.getExtension(filePath);
             // 更新文件名
             aPackage.setFileName(fileName);
 
