@@ -68,10 +68,10 @@ public class PackageController {
     //历史版本列表页
     @GetMapping("/apps/{code}/{env}/{bigV}")
     public String getAppsByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
-                               @PathVariable("bigV") String bigV, HttpServletRequest request){
-        List<Package> packageList=this.packageService.findPackageListByEnvAndBigv(bigV,env);
-        Package topPackage=this.packageService.findTopPackageByEnvAndBigV(bigV,env);
-        AppViewModel appViewModel=this.appService.findPackagesByEnvAndBigv(code,packageList,topPackage);
+                               @PathVariable("bigV") String bigV, HttpServletRequest request) {
+        List<Package> packageList = this.packageService.findPackageListByEnvAndBigv(bigV, env);
+        Package topPackage = this.packageService.findTopPackageByEnvAndBigV(bigV, env);
+        AppViewModel appViewModel = this.appService.findPackagesByEnvAndBigv(code, packageList, topPackage);
         request.setAttribute("package", appViewModel);
         request.setAttribute("apps", appViewModel.getPackageList());
         return "list";
@@ -114,11 +114,46 @@ public class PackageController {
      */
     @RequestMapping("/app/upload")
     @ResponseBody
-    public Map<String, Object> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public Map<String, Object> upload(@RequestParam("file") MultipartFile file,
+                                      HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         try {
             String filePath = transfer(file);
-            Package aPackage = this.packageService.buildPackage(filePath);
+            Package aPackage = this.packageService.buildPackage(filePath,"");
+            App app = this.appService.getByPackage(aPackage);
+            app.getPackageList().add(aPackage);
+            app.setCurrentPackage(aPackage);
+            aPackage.setApp(app);
+            app = this.appService.save(app);
+            // URL
+            String codeURL = this.pathManager.getBaseURL(false) + "p/code/" + app.getCurrentPackage().getId();
+            // 发送WebHook消息
+            WebHookClient.sendMessage(app, pathManager);
+            map.put("code", codeURL);
+            map.put("success", true);
+        } catch (Exception e) {
+            map.put("success", false);
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    /**
+     *
+     * 命令行发送请求，便于集成到Jenkins上
+     *
+     * @param appFile apk文件或者ipa文件
+     * @param logFile 日志文件
+     */
+    @RequestMapping("/app/uplods")
+    @ResponseBody
+    public Map<String, Object> uploads(@RequestParam("app") MultipartFile appFile, @RequestParam("log") MultipartFile logFile,
+                                       HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            String logPath=transfer(logFile);
+            String appPath = transfer(appFile);
+            Package aPackage = this.packageService.buildPackage(appPath,logPath);
             App app = this.appService.getByPackage(aPackage);
             app.getPackageList().add(aPackage);
             app.setCurrentPackage(aPackage);
@@ -256,5 +291,4 @@ public class PackageController {
         }
         return null;
     }
-
 }

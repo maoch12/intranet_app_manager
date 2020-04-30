@@ -27,7 +27,7 @@ public class PackageService {
     @Resource
     private PathManager pathManager;
 
-    public Package buildPackage(String filePath) {
+    public Package buildPackage(String filePath,String logPath) {
         Package aPackage = ParserClient.parse(filePath);
         try {
             String env = aPackage.getEnvironment();
@@ -44,16 +44,19 @@ public class PackageService {
             String tempIconPath = PathManager.getTempIconPath(aPackage);
             String iconPath = packagePath + File.separator + "icon.png";
             String sourcePath = packagePath + File.separator + fileName;
+            String appLogPath=packagePath+File.separator+"log.txt";
 
             // 拷贝图标
             ImageUtils.resize(tempIconPath, iconPath, 192, 192);
             // 源文件
             FileUtils.copyFile(new File(filePath), new File(sourcePath));
+            FileUtils.copyFile(new File(logPath),new File(appLogPath));
 
             // 删除临时图标
             FileUtils.forceDelete(new File(tempIconPath));
             // 源文件
             FileUtils.forceDelete(new File(filePath));
+            FileUtils.forceDelete(new File(logPath));
         } catch (Exception e) {
             e.printStackTrace();
         }
