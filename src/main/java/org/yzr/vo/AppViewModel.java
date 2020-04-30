@@ -1,12 +1,10 @@
 package org.yzr.vo;
 
+
 import lombok.Getter;
-import org.yzr.dao.PackageDao;
 import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.utils.PathManager;
-
-import javax.annotation.Resource;
 import java.util.*;
 
 
@@ -85,6 +83,23 @@ public class AppViewModel {
         this.installPath = pathManager.getBaseURL(false)+app.getShortCode()+"/"+aPackage.getEnvironment()+"/"+aPackage.getBigVersion()+"/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
+    }
+
+    public AppViewModel(App app, PathManager pathManager, List<Package> packages, Package topPackge){
+        this.id = app.getId();
+        this.platform = app.getPlatform();
+        this.bundleID = app.getBundleID();
+        this.icon = PathManager.getRelativePath(topPackge) + "icon.png";
+        this.version = topPackge.getVersion();
+        this.bigVersion = topPackge.getBigVersion();
+        this.environment = topPackge.getEnvironment();
+        this.buildVersion = topPackge.getBuildVersion();
+        this.shortCode = app.getShortCode();
+        this.name = app.getName();
+        this.installPath=pathManager.getBaseURL(false)+app.getShortCode()+"/"+topPackge.getEnvironment()+"/"+topPackge.getBigVersion()+"/";
+        this.minVersion = topPackge.getMinVersion();
+        this.currentPackage = new PackageViewModel(topPackge, pathManager);
+        this.packageList=sortPackages(packages,pathManager);
     }
 
     //加载预览页所以需要的数据

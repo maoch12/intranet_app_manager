@@ -7,12 +7,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.yzr.dao.PackageDao;
 import org.yzr.model.Package;
 import org.yzr.service.PackageService;
-import org.yzr.utils.ipa.PlistGenerator;
-import org.yzr.utils.parser.ParserClient;
-import org.yzr.vo.PackageViewModel;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,7 +41,7 @@ public class ApplicationTests {
 
     @Test
     public void testFindTopByService(){
-        Package aPackage=this.packageService.findPackageByEnvAndBigV("6.4","sit");
+        Package aPackage=this.packageService.findTopPackageByEnvAndBigV("6.4","sit");
         System.out.println(aPackage.getCreateTime());
     }
 }

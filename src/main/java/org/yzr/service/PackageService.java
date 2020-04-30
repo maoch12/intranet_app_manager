@@ -9,6 +9,7 @@ import org.yzr.model.Package;
 import org.yzr.utils.ImageUtils;
 import org.yzr.utils.PathManager;
 import org.yzr.utils.parser.ParserClient;
+import org.yzr.vo.AppViewModel;
 import org.yzr.vo.PackageViewModel;
 
 import javax.annotation.Resource;
@@ -95,7 +96,7 @@ public class PackageService {
     }
 
     @Transactional
-    public Package findPackageByEnvAndBigV(String bigVersion, String environment) {
+    public Package findTopPackageByEnvAndBigV(String bigVersion, String environment) {
         if (environment != null && bigVersion != null) {
             return this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
         }
@@ -103,13 +104,22 @@ public class PackageService {
     }
 
     @Transactional
-    public Package findPackageByEnvAndBigVOrPackageId(String bigVersion, String environment, String packageId) {
-        if (!packageId.isEmpty()) {
+    public Package findTopPackageByEnvAndBigVOrPackageId(String bigVersion, String environment, String packageId) {
+        if (packageId != null) {
             return this.packageDao.findById(packageId).get();
         } else if (environment != null && bigVersion != null) {
             return this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
         }
         return null;
     }
+
+    @Transactional
+    public List<Package> findPackageListByEnvAndBigv(String bigVersion, String environment) {
+        if (environment != null && bigVersion != null) {
+            return this.packageDao.findAllByBigVersionAndEnvironment(bigVersion, environment);
+        }
+        return null;
+    }
+
 
 }

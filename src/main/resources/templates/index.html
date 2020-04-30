@@ -71,11 +71,11 @@
                         <div th:class="'card app '  + @{'card-' + ${app.platform}}">
                             <i th:class="'type-icon '  + @{'icon-' + ${app.platform}}"></i>
                             <div class="type-mark"></div>
-                            <a class="appicon" th:href="'/apps/' + ${app.id}" target="_blank">
+                            <a class="appicon" th:href="'/apps/' + ${app.shortCode}+'/'+${app.environment}+'/'+${app.bigVersion}+'/'" target="_blank">
                                 <img class="icon ng-isolate-scope" width="100" height="100" th:src="@{'/' + ${app.icon}}" />
                             </a>
                             <!-- ngIf: app.has_combo --><br>
-                            <p class="appname" th:data="@{${baseURL} + 'apps/' + ${app.id}}">
+                            <p class="appname" th:data="@{${baseURL} + 'apps/' + ${app.shortCode}+'/'+${app.environment}+'/'+${app.bigVersion}+'/'}">
                                 <i class="icon-owner"></i>
                                 <span class="ng-binding">[[${app.name}]]</span></p>
                             <table>
@@ -105,7 +105,7 @@
                                 </tbody>
                             </table>
                             <div class="action">
-                                <a class="ng-binding" th:href="'/apps/' + ${app.id}">
+                                <a class="ng-binding" th:href="'/apps/' + ${app.shortCode}+'/'+${app.environment}+'/'+${app.bigVersion}+'/'">
                                     <i class="icon-pen"></i> 编辑</a>
                                 <a th:href="@{${baseURL}+${app.shortCode}+'/'+${app.environment}+'/'+${app.bigVersion}+'/'}" target="_blank" class="ng-binding">
                                     <i class="icon-eye"></i> 预览</a>

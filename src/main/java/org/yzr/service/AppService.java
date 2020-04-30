@@ -112,8 +112,21 @@ public class AppService {
     @Transactional
     public AppViewModel findPackageByEnvAndBigV(String code, Package aPackage) {
         App app = this.appDao.findByShortCode(code);
-        AppViewModel viewModel = new AppViewModel(app, pathManager, aPackage);
-        return viewModel;
+        if (app != null) {
+            AppViewModel viewModel = new AppViewModel(app, pathManager, aPackage);
+            return viewModel;
+        }
+        return null;
+    }
+
+    @Transactional
+    public AppViewModel findPackagesByEnvAndBigv(String code,List<Package> packages,Package topPackage){
+        App app=this.appDao.findByShortCode(code);
+        if (app!=null){
+            AppViewModel viewModel=new AppViewModel(app,pathManager,packages,topPackage);
+            return viewModel;
+        }
+        return null;
     }
 
 

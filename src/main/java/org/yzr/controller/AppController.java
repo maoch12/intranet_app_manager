@@ -33,7 +33,6 @@ public class AppController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "index";
     }
 
@@ -44,7 +43,6 @@ public class AppController {
         request.setAttribute("apps", appViewModel.getPackageList());
         return "list";
     }
-
 
     @RequestMapping("/app/delete/{id}")
     @ResponseBody

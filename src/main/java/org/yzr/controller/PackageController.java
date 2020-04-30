@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,12 +57,24 @@ public class PackageController {
     public String getByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
                            @PathVariable("bigV") String bigV, HttpServletRequest request) {
         String id = request.getParameter("id");
-        Package aPackage = this.packageService.findPackageByEnvAndBigVOrPackageId(bigV, env, id);
+        Package aPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(bigV, env, id);
         AppViewModel viewModel = this.appService.findPackageByEnvAndBigV(code, aPackage);
         request.setAttribute("app", viewModel);
         request.setAttribute("ca_path", this.pathManager.getCAPath());
         request.setAttribute("basePath", this.pathManager.getBaseURL(false));
         return "install";
+    }
+
+    //历史版本列表页
+    @GetMapping("/apps/{code}/{env}/{bigV}")
+    public String getAppsByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
+                               @PathVariable("bigV") String bigV, HttpServletRequest request){
+        List<Package> packageList=this.packageService.findPackageListByEnvAndBigv(bigV,env);
+        Package topPackage=this.packageService.findTopPackageByEnvAndBigV(bigV,env);
+        AppViewModel appViewModel=this.appService.findPackagesByEnvAndBigv(code,packageList,topPackage);
+        request.setAttribute("package", appViewModel);
+        request.setAttribute("apps", appViewModel.getPackageList());
+        return "list";
     }
 
 
