@@ -5,6 +5,8 @@ import org.apache.commons.io.FileUtils;
 import org.yzr.model.Package;
 import org.yzr.utils.PathManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +33,7 @@ public class PackageViewModel {
     private String displayTime;
     private boolean iOS;
     private String type;
+    private String log;
     private List<String> devices;
     private int deviceCount;
 
@@ -38,6 +41,12 @@ public class PackageViewModel {
         this.downloadURL = pathManager.getBaseURL(false) + "p/" + aPackage.getId();
         this.safeDownloadURL = pathManager.getBaseURL(true) + "p/" + aPackage.getId();
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
+        File logFile = new File(pathManager.getPackageResourceURL(aPackage, true) + "log.txt");
+        try {
+            this.log = FileUtils.readFileToString(logFile, "UTF-8");
+        } catch (IOException e) {
+            this.log = "日志文件读取失败了";
+        }
         this.id = aPackage.getId();
         this.version = aPackage.getVersion();
         this.environment = aPackage.getEnvironment();
@@ -62,7 +71,7 @@ public class PackageViewModel {
             this.iOS = false;
             this.installURL = pathManager.getPackageResourceURL(aPackage, false) + aPackage.getFileName();
         }
-        this.previewURL = pathManager.getBaseURL(false) +"s/"+ aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
+        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
                 + aPackage.getBigVersion() + "?id=" + aPackage.getId();
         if (this.isIOS()) {
             if (aPackage.getProvision() == null) {
