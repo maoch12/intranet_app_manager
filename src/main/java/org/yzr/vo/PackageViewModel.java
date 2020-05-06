@@ -5,8 +5,11 @@ import org.apache.commons.io.FileUtils;
 import org.yzr.model.Package;
 import org.yzr.utils.PathManager;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,12 +44,10 @@ public class PackageViewModel {
         this.downloadURL = pathManager.getBaseURL(false) + "p/" + aPackage.getId();
         this.safeDownloadURL = pathManager.getBaseURL(true) + "p/" + aPackage.getId();
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
-        File logFile = new File(pathManager.getPackageResourceURL(aPackage, true) + "log.txt");
-        try {
-            this.log = FileUtils.readFileToString(logFile, "UTF-8");
-        } catch (IOException e) {
-            this.log = "日志文件读取失败了";
-        }
+        String logPath=pathManager.getPackageResourceURL(aPackage, true) + "log.txt";
+        this.log=logPath;
+//        this.log=downloadLog(logPath);
+
         this.id = aPackage.getId();
         this.version = aPackage.getVersion();
         this.environment = aPackage.getEnvironment();
@@ -96,4 +97,21 @@ public class PackageViewModel {
         }
     }
 
+    private String downloadLog(String logPath){
+        try {
+            URL url = new URL(logPath);
+            InputStream is = url.openStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            StringBuffer sb = new StringBuffer("");
+            int len = 0;
+            byte[] temp = new byte[1024];
+            while ((len = bis.read(temp)) != -1) {
+                sb.append(new String(temp, 0, len));
+            }
+          return  sb.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }

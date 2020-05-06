@@ -2,9 +2,13 @@ package org.yzr.vo;
 
 
 import lombok.Getter;
+import org.apache.commons.io.FileUtils;
 import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.utils.PathManager;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -35,10 +39,11 @@ public class AppViewModel {
 
     private String environment;
 
+    private String log;
+
     private List<PackageViewModel> packageList;
 
     private PackageViewModel currentPackage;
-
 
 
     /***
@@ -52,6 +57,7 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+        this.log = findLogText(PathManager.getFullPath(app.getCurrentPackage()) + "log.txt");
         Package aPackage = findPackageById(app, null);
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();
@@ -59,7 +65,7 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false)+"s/"+app.getShortCode()+"/"+aPackage.getEnvironment()+"/"+aPackage.getBigVersion()+"/";
+        this.installPath = pathManager.getBaseURL(false) + "s/" + app.getShortCode() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
         if (loadList) {
@@ -73,6 +79,7 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+        this.log = findLogText(PathManager.getFullPath(app.getCurrentPackage()) + "log.txt");
         Package aPackage = findPackageById(app, packageId);
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();
@@ -80,26 +87,27 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false)+"s/"+app.getShortCode()+"/"+aPackage.getEnvironment()+"/"+aPackage.getBigVersion()+"/";
+        this.installPath = pathManager.getBaseURL(false) + "s/" + app.getShortCode() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
 
-    public AppViewModel(App app, PathManager pathManager, List<Package> packages, Package topPackge){
+    public AppViewModel(App app, PathManager pathManager, List<Package> packages, Package topPackge) {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(topPackge) + "icon.png";
+        this.log = findLogText(PathManager.getFullPath(topPackge) + "log.txt");
         this.version = topPackge.getVersion();
         this.bigVersion = topPackge.getBigVersion();
         this.environment = topPackge.getEnvironment();
         this.buildVersion = topPackge.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath=pathManager.getBaseURL(false)+"s/"+app.getShortCode()+"/"+topPackge.getEnvironment()+"/"+topPackge.getBigVersion()+"/";
+        this.installPath = pathManager.getBaseURL(false) + "s/" + app.getShortCode() + "/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
         this.minVersion = topPackge.getMinVersion();
         this.currentPackage = new PackageViewModel(topPackge, pathManager);
-        this.packageList=sortPackages(packages,pathManager);
+        this.packageList = sortPackages(packages, pathManager);
     }
 
     //加载预览页所以需要的数据
@@ -108,13 +116,14 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(aPackage) + "icon.png";
+        this.log = findLogText(PathManager.getFullPath(aPackage) + "log.txt");
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();
         this.environment = aPackage.getEnvironment();
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath=pathManager.getBaseURL(false)+"s/"+app.getShortCode()+"/"+aPackage.getEnvironment()+"/"+aPackage.getBigVersion()+"/";
+        this.installPath = pathManager.getBaseURL(false) + "s/" + app.getShortCode() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
@@ -128,6 +137,15 @@ public class AppViewModel {
             }
         }
         return app.getCurrentPackage();
+    }
+
+    private static String findLogText(String path) {
+        File logFile = new File(path);
+        try {
+            return FileUtils.readFileToString(logFile, "UTF-8");
+        } catch (IOException e) {
+            return "日志文件读取失败了,原因是：" + e.getMessage();
+        }
     }
 
 
