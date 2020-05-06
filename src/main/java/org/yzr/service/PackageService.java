@@ -1,6 +1,7 @@
 package org.yzr.service;
 
 
+import com.mysql.cj.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -44,19 +45,25 @@ public class PackageService {
             String tempIconPath = PathManager.getTempIconPath(aPackage);
             String iconPath = packagePath + File.separator + "icon.png";
             String sourcePath = packagePath + File.separator + fileName;
-            String appLogPath=packagePath+File.separator+"log.txt";
+
+
+            if (StringUtils.isNullOrEmpty(logPath)){
+                String appLogPath=packagePath+File.separator+"log.txt";
+                FileUtils.copyFile(new File(logPath),new File(appLogPath));
+                FileUtils.forceDelete(new File(logPath));
+            }
 
             // 拷贝图标
             ImageUtils.resize(tempIconPath, iconPath, 192, 192);
             // 源文件
             FileUtils.copyFile(new File(filePath), new File(sourcePath));
-            FileUtils.copyFile(new File(logPath),new File(appLogPath));
+
 
             // 删除临时图标
             FileUtils.forceDelete(new File(tempIconPath));
             // 源文件
             FileUtils.forceDelete(new File(filePath));
-            FileUtils.forceDelete(new File(logPath));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -145,7 +145,7 @@ public class PackageController {
      * @param appFile apk文件或者ipa文件
      * @param logFile 日志文件
      */
-    @RequestMapping("/app/uplods")
+    @RequestMapping("/app/uploads")
     @ResponseBody
     public Map<String, Object> uploads(@RequestParam("app") MultipartFile appFile, @RequestParam("log") MultipartFile logFile,
                                        HttpServletRequest request) {
