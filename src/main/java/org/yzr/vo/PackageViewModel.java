@@ -44,7 +44,12 @@ public class PackageViewModel {
         this.downloadURL = pathManager.getBaseURL(false) + "p/" + aPackage.getId();
         this.safeDownloadURL = pathManager.getBaseURL(true) + "p/" + aPackage.getId();
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
-        this.log=pathManager.getPackageResourceURL(aPackage, true) + "log.txt";
+        String logPath=PathManager.getFullPath(aPackage) + "log.txt";
+        try {
+            this.log=FileUtils.readFileToString(new File(logPath), "UTF-8");
+        } catch (IOException e) {
+            this.log="日志获取失败，联系打包人员，检查是否有上传日志";
+        }
         this.id = aPackage.getId();
         this.version = aPackage.getVersion();
         this.environment = aPackage.getEnvironment();
