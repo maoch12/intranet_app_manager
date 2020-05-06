@@ -47,7 +47,7 @@ public class PackageService {
             String sourcePath = packagePath + File.separator + fileName;
 
 
-            if (StringUtils.isNullOrEmpty(logPath)){
+            if (!StringUtils.isNullOrEmpty(logPath)){
                 String appLogPath=packagePath+File.separator+"log.txt";
                 FileUtils.copyFile(new File(logPath),new File(appLogPath));
                 FileUtils.forceDelete(new File(logPath));
