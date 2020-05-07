@@ -132,5 +132,4 @@ public class AppService {
     public App findApp(String bundleId, String platfrom){
         return this.appDao.findAppByBundleIDAndAndPlatform(bundleId,platfrom);
     }
-
 }
