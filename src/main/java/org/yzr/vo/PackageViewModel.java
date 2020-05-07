@@ -44,11 +44,11 @@ public class PackageViewModel {
         this.downloadURL = pathManager.getBaseURL(false) + "p/" + aPackage.getId();
         this.safeDownloadURL = pathManager.getBaseURL(true) + "p/" + aPackage.getId();
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
-        String logPath=PathManager.getFullPath(aPackage) + "log.txt";
+        String logPath = PathManager.getFullPath(aPackage) + "log.txt";
         try {
-            this.log=FileUtils.readFileToString(new File(logPath), "UTF-8");
+            this.log = FileUtils.readFileToString(new File(logPath), "UTF-8");
         } catch (IOException e) {
-            this.log="日志获取失败，联系打包人员，检查是否有上传日志";
+            this.log = "日志获取失败，联系打包人员，检查是否有上传日志";
         }
         this.id = aPackage.getId();
         this.version = aPackage.getVersion();
@@ -74,7 +74,8 @@ public class PackageViewModel {
             this.iOS = false;
             this.installURL = pathManager.getPackageResourceURL(aPackage, false) + aPackage.getFileName();
         }
-        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
+        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getBundleID() + "/"
+                + aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
                 + aPackage.getBigVersion() + "?id=" + aPackage.getId();
         if (this.isIOS()) {
             if (aPackage.getProvision() == null) {

@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.yzr.dao.PackageDao;
+import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.utils.ImageUtils;
 import org.yzr.utils.PathManager;
@@ -28,7 +29,7 @@ public class PackageService {
     @Resource
     private PathManager pathManager;
 
-    public Package buildPackage(String filePath,String logPath) {
+    public Package buildPackage(String filePath, String logPath) {
         Package aPackage = ParserClient.parse(filePath);
         try {
             String env = aPackage.getEnvironment();
@@ -47,9 +48,9 @@ public class PackageService {
             String sourcePath = packagePath + File.separator + fileName;
 
 
-            if (!StringUtils.isNullOrEmpty(logPath)){
-                String appLogPath=packagePath+File.separator+"log.txt";
-                FileUtils.copyFile(new File(logPath),new File(appLogPath));
+            if (!StringUtils.isNullOrEmpty(logPath)) {
+                String appLogPath = packagePath + File.separator + "log.txt";
+                FileUtils.copyFile(new File(logPath), new File(appLogPath));
                 FileUtils.forceDelete(new File(logPath));
             }
 
@@ -114,19 +115,20 @@ public class PackageService {
     }
 
     @Transactional
-    public Package findTopPackageByEnvAndBigVOrPackageId(String bigVersion, String environment, String packageId) {
-        if (packageId != null) {
+    public Package findTopPackageByEnvAndBigVOrPackageId(App app, String bigVersion, String environment, String packageId) {
+        if (!StringUtils.isNullOrEmpty(packageId)) {
             return this.packageDao.findById(packageId).get();
-        } else if (environment != null && bigVersion != null) {
-            return this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc(bigVersion, environment);
+        } else if (!StringUtils.isNullOrEmpty(environment) && !StringUtils.isNullOrEmpty(bigVersion)) {
+            return this.packageDao.findTopByAppAndBigVersionAndEnvironmentOrderByCreateTimeDesc(app, bigVersion, environment);
         }
         return null;
     }
 
     @Transactional
-    public List<Package> findPackageListByEnvAndBigv(String bigVersion, String environment) {
-        if (environment != null && bigVersion != null) {
-            return this.packageDao.findAllByBigVersionAndEnvironment(bigVersion, environment);
+    public List<Package> findPackageListByEnvAndBigv(App app, String bigVersion, String environment) {
+        if (app != null && !StringUtils.isNullOrEmpty(environment) && !StringUtils.isNullOrEmpty(bigVersion)) {
+//            return this.packageDao.findAllByBigVersionAndEnvironment(bigVersion, environment);
+            return this.packageDao.findAllByAppAndAndBigVersionAndAndEnvironment(app, bigVersion, environment);
         }
         return null;
     }

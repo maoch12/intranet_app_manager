@@ -65,7 +65,7 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleID()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
         if (loadList) {
@@ -87,7 +87,7 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleID()+"/"+ app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
@@ -104,7 +104,7 @@ public class AppViewModel {
         this.buildVersion = topPackge.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" + app.getPlatform() + "/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleID()+"/"+ app.getPlatform() + "/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
         this.minVersion = topPackge.getMinVersion();
         this.currentPackage = new PackageViewModel(topPackge, pathManager);
         this.packageList = sortPackages(packages, pathManager);
@@ -123,7 +123,7 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleID()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
@@ -144,7 +144,7 @@ public class AppViewModel {
         try {
             return FileUtils.readFileToString(logFile, "UTF-8");
         } catch (IOException e) {
-            return "日志文件读取失败了,原因是：" + e.getMessage();
+            return "日志获取失败，联系打包人员，检查是否有上传日志";
         }
     }
 

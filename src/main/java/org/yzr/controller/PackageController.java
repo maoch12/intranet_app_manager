@@ -53,25 +53,30 @@ public class PackageController {
     }
 
     //美居预览页
-    @GetMapping("/app/{code}/{env}/{bigV}")
-    public String getByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
-                           @PathVariable("bigV") String bigV, HttpServletRequest request) {
+    @GetMapping("/app/{boundId}/{platfrom}/{env}/{bigV}")
+    public String getByEnv(@PathVariable("boundId") String boundId,@PathVariable("platfrom") String platfrom,
+                           @PathVariable("env") String env, @PathVariable("bigV") String bigV,
+                           HttpServletRequest request) {
         String id = request.getParameter("id");
-        Package aPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(bigV, env, id);
-        AppViewModel viewModel = this.appService.findPackageByEnvAndBigV(code, aPackage);
+        App app=this.appService.findApp(boundId,platfrom);
+        Package aPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app,bigV, env, id);
+        AppViewModel viewModel = this.appService.findPackageByEnvAndBigV(app, aPackage);
         request.setAttribute("app", viewModel);
         request.setAttribute("ca_path", this.pathManager.getCAPath());
         request.setAttribute("basePath", this.pathManager.getBaseURL(false));
+
         return "install";
     }
 
     //历史版本列表页
-    @GetMapping("/apps/{code}/{env}/{bigV}")
-    public String getAppsByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
-                               @PathVariable("bigV") String bigV, HttpServletRequest request) {
-        List<Package> packageList = this.packageService.findPackageListByEnvAndBigv(bigV, env);
-        Package topPackage = this.packageService.findTopPackageByEnvAndBigV(bigV, env);
-        AppViewModel appViewModel = this.appService.findPackagesByEnvAndBigv(code, packageList, topPackage);
+    @GetMapping("/apps/{boundId}/{platfrom}/{env}/{bigV}")
+    public String getAppsByEnv(@PathVariable("boundId") String boundId,@PathVariable("platfrom") String platfrom,
+                               @PathVariable("env") String env, @PathVariable("bigV") String bigV,
+                               HttpServletRequest request) {
+        App app=this.appService.findApp(boundId,platfrom);
+        List<Package> packageList = this.packageService.findPackageListByEnvAndBigv(app,bigV, env);
+        Package topPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app,bigV, env, "");
+        AppViewModel appViewModel = this.appService.findPackagesByEnvAndBigv(app, packageList, topPackage);
         request.setAttribute("package", appViewModel);
         request.setAttribute("apps", appViewModel.getPackageList());
         return "list";
@@ -290,5 +295,9 @@ public class PackageController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String transferToBoundId(String pathVariable){
+        return "";
     }
 }

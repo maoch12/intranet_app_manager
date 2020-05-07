@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.yzr.dao.PackageDao;
+import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.service.PackageService;
 
@@ -34,14 +35,9 @@ public class ApplicationTests {
     }
 
     @Test
-    public void testFindTop(){
-       Package aPackage= this.packageDao.findFirstByBigVersionAndEnvironmentOrderByCreateTimeDesc("6.4","sit");
-        System.out.println(aPackage.getCreateTime());
-    }
-
-    @Test
-    public void testFindTopByService(){
-        Package aPackage=this.packageService.findTopPackageByEnvAndBigV("6.4","sit");
-        System.out.println(aPackage.getCreateTime());
+    public void testfind(){
+        App app=new App();
+        app.setId("4028ab0071ecce980171eccf8e1e0000");
+        this.packageDao.findAllByApp(app);
     }
 }

@@ -113,15 +113,14 @@ public class AppService {
     }
 
     @Transactional
-    public AppViewModel findPackageByEnvAndBigV(String code, Package aPackage) {
-        App app = this.appDao.findByShortCode(code);
+    public AppViewModel findPackageByEnvAndBigV(App app, Package aPackage) {
+//        App app = this.appDao.findByShortCode(code);
         AppViewModel viewModel = new AppViewModel(app, pathManager, aPackage);
         return viewModel;
     }
 
     @Transactional
-    public AppViewModel findPackagesByEnvAndBigv(String code, List<Package> packages, Package topPackage) {
-        App app = this.appDao.findByShortCode(code);
+    public AppViewModel findPackagesByEnvAndBigv(App app, List<Package> packages, Package topPackage) {
         if (app != null) {
             AppViewModel viewModel = new AppViewModel(app, pathManager, packages, topPackage);
             return viewModel;
@@ -129,5 +128,9 @@ public class AppService {
         return null;
     }
 
+    @Transactional
+    public App findApp(String bundleId, String platfrom){
+        return this.appDao.findAppByBundleIDAndAndPlatform(bundleId,platfrom);
+    }
 
 }
