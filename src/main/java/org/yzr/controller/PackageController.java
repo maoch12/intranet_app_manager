@@ -4,6 +4,7 @@ package org.yzr.controller;
 import net.glxn.qrgen.javase.QRCode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,8 @@ public class PackageController {
     private PackageService packageService;
     @Resource
     private PathManager pathManager;
+    @Resource
+    private Environment environment;
 
     /**
      * 预览页
@@ -53,13 +56,14 @@ public class PackageController {
     }
 
     //美居预览页
-    @GetMapping("/app/{boundId}/{platfrom}/{env}/{bigV}")
-    public String getByEnv(@PathVariable("boundId") String boundId,@PathVariable("platfrom") String platfrom,
+    @GetMapping("/app/{bundleName}/{platfrom}/{env}/{bigV}")
+    public String getByEnv(@PathVariable("bundleName") String bundleName, @PathVariable("platfrom") String platfrom,
                            @PathVariable("env") String env, @PathVariable("bigV") String bigV,
                            HttpServletRequest request) {
+        String boundId = transferToBoundId(bundleName);
         String id = request.getParameter("id");
-        App app=this.appService.findApp(boundId,platfrom);
-        Package aPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app,bigV, env, id);
+        App app = this.appService.findApp(boundId, platfrom);
+        Package aPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app, bigV, env, id);
         AppViewModel viewModel = this.appService.findPackageByEnvAndBigV(app, aPackage);
         request.setAttribute("app", viewModel);
         request.setAttribute("ca_path", this.pathManager.getCAPath());
@@ -69,13 +73,14 @@ public class PackageController {
     }
 
     //历史版本列表页
-    @GetMapping("/apps/{boundId}/{platfrom}/{env}/{bigV}")
-    public String getAppsByEnv(@PathVariable("boundId") String boundId,@PathVariable("platfrom") String platfrom,
+    @GetMapping("/apps/{boundName}/{platfrom}/{env}/{bigV}")
+    public String getAppsByEnv(@PathVariable("boundName") String boundName, @PathVariable("platfrom") String platfrom,
                                @PathVariable("env") String env, @PathVariable("bigV") String bigV,
                                HttpServletRequest request) {
-        App app=this.appService.findApp(boundId,platfrom);
-        List<Package> packageList = this.packageService.findPackageListByEnvAndBigv(app,bigV, env);
-        Package topPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app,bigV, env, "");
+        String boundId = transferToBoundId(boundName);
+        App app = this.appService.findApp(boundId, platfrom);
+        List<Package> packageList = this.packageService.findPackageListByEnvAndBigv(app, bigV, env);
+        Package topPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app, bigV, env, "");
         AppViewModel appViewModel = this.appService.findPackagesByEnvAndBigv(app, packageList, topPackage);
         request.setAttribute("package", appViewModel);
         request.setAttribute("apps", appViewModel.getPackageList());
@@ -124,10 +129,11 @@ public class PackageController {
         Map<String, Object> map = new HashMap<>();
         try {
             String filePath = transfer(file);
-            Package aPackage = this.packageService.buildPackage(filePath,"");
+            Package aPackage = this.packageService.buildPackage(filePath, "");
             App app = this.appService.getByPackage(aPackage);
             app.getPackageList().add(aPackage);
             app.setCurrentPackage(aPackage);
+            app.setBundleName(transferToBoundName(aPackage.getBundleID()));
             aPackage.setApp(app);
             app = this.appService.save(app);
             // URL
@@ -144,7 +150,6 @@ public class PackageController {
     }
 
     /**
-     *
      * 命令行发送请求，便于集成到Jenkins上
      *
      * @param appFile apk文件或者ipa文件
@@ -152,16 +157,18 @@ public class PackageController {
      */
     @RequestMapping("/app/uploads")
     @ResponseBody
-    public Map<String, Object> uploads(@RequestParam("app") MultipartFile appFile, @RequestParam("log") MultipartFile logFile,
+    public Map<String, Object> uploads(@RequestParam("app") MultipartFile appFile, @RequestParam("log")
+            MultipartFile logFile,
                                        HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         try {
-            String logPath=transfer(logFile);
+            String logPath = transfer(logFile);
             String appPath = transfer(appFile);
-            Package aPackage = this.packageService.buildPackage(appPath,logPath);
+            Package aPackage = this.packageService.buildPackage(appPath, logPath);
             App app = this.appService.getByPackage(aPackage);
             app.getPackageList().add(aPackage);
             app.setCurrentPackage(aPackage);
+            app.setBundleName(transferToBoundName(aPackage.getBundleID()));
             aPackage.setApp(app);
             app = this.appService.save(app);
             // URL
@@ -297,7 +304,11 @@ public class PackageController {
         return null;
     }
 
-    private String transferToBoundId(String pathVariable){
-        return "";
+    private String transferToBoundId(String pathVariable) {
+        return environment.getProperty("com.midea.package." + pathVariable);
+    }
+
+    private String transferToBoundName(String bundleID) {
+        return environment.getProperty(bundleID);
     }
 }

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IPAParser implements PackageParser {
@@ -47,7 +48,14 @@ public class IPAParser implements PackageParser {
             }
             String version=infoPlist.stringValueForPath("CFBundleShortVersionString");
             aPackage.setVersion(version);
-            aPackage.setBigVersion(version.substring(0,5));
+
+            Pattern r = Pattern.compile("^(\\d+)(\\.)(\\d+)(\\.)(\\d+)");
+            Matcher m = r.matcher(version);
+            if (m.find()) {
+                aPackage.setBigVersion(m.group());
+            } else {
+                aPackage.setBigVersion(version.substring(0, 5));
+            }
             aPackage.setBuildVersion(infoPlist.stringValueForPath("CFBundleVersion"));
             aPackage.setBundleID(infoPlist.stringValueForPath("CFBundleIdentifier"));
             aPackage.setMinVersion(infoPlist.stringValueForPath("MinimumOSVersion"));

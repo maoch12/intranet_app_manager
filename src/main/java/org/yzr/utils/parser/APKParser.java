@@ -9,6 +9,8 @@ import org.yzr.utils.PathManager;
 
 import java.io.File;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class APKParser implements PackageParser {
     @Override
@@ -63,8 +65,17 @@ public class APKParser implements PackageParser {
             version = versionName;
         }
         aPackage.setVersion(version);
-        aPackage.setBigVersion(version.substring(0,5));
         aPackage.setEnvironment(environment);
+
+        String pattern = "^(\\d+)(\\.)(\\d+)(\\.)(\\d+)";
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(version);
+        if (m.find()) {
+            aPackage.setBigVersion(m.group());
+        } else {
+            aPackage.setBigVersion(version.substring(0, 5));
+        }
     }
+
 
 }

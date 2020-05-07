@@ -37,6 +37,7 @@ public class PackageViewModel {
     private boolean iOS;
     private String type;
     private String log;
+    private String bundleName;
     private List<String> devices;
     private int deviceCount;
 
@@ -62,6 +63,7 @@ public class PackageViewModel {
         Date updateTime = new Date(this.createTime);
         String displayTime = (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(updateTime);
         this.displayTime = displayTime;
+        this.bundleName=aPackage.getApp().getBundleName();
         if (aPackage.getPlatform().equals("ios")) {
             this.iOS = true;
             String url = pathManager.getBaseURL(true) + "m/" + aPackage.getId();
@@ -74,7 +76,7 @@ public class PackageViewModel {
             this.iOS = false;
             this.installURL = pathManager.getPackageResourceURL(aPackage, false) + aPackage.getFileName();
         }
-        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getBundleID() + "/"
+        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getBundleName() + "/"
                 + aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
                 + aPackage.getBigVersion() + "?id=" + aPackage.getId();
         if (this.isIOS()) {

@@ -41,6 +41,8 @@ public class AppViewModel {
 
     private String log;
 
+    private String bundleName;
+
     private List<PackageViewModel> packageList;
 
     private PackageViewModel currentPackage;
@@ -65,7 +67,8 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleID()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.bundleName =app.getBundleName();
+        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleName()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
         if (loadList) {
@@ -87,7 +90,8 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleID()+"/"+ app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.bundleName =app.getBundleName();
+        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleName()+"/"+ app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
@@ -104,7 +108,8 @@ public class AppViewModel {
         this.buildVersion = topPackge.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleID()+"/"+ app.getPlatform() + "/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
+        this.bundleName =app.getBundleName();
+        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleName()+"/"+ app.getPlatform() + "/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
         this.minVersion = topPackge.getMinVersion();
         this.currentPackage = new PackageViewModel(topPackge, pathManager);
         this.packageList = sortPackages(packages, pathManager);
@@ -123,7 +128,8 @@ public class AppViewModel {
         this.buildVersion = aPackage.getBuildVersion();
         this.shortCode = app.getShortCode();
         this.name = app.getName();
-        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleID()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.bundleName =app.getBundleName();
+        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleName()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }

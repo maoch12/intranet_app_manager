@@ -32,6 +32,8 @@ public class App {
     private String description;
     // 创建时间
     private long createTime;
+
+    private String bundleName;
     // 包列表
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "app")
     private List<Package> packageList;
