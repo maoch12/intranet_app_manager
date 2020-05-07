@@ -180,17 +180,17 @@
                                      class="change_icon ng-isolate-scope" th:src="'/' + ${package.icon}">
                             </div>
                         </div>
-<!--                        <div class="field app-deletion">-->
-<!--                            <div class="left-label ng-binding">-->
-<!--                                删除应用-->
-<!--                            </div>-->
-<!--                            <div class="value">-->
-<!--                                <button id="delete-app" th:data="${package.id}"-->
-<!--                                        class="btn btn-danger btn-circle require-confirm">-->
-<!--                                    <span class="ng-scope">删除</span>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
+                        <div class="field app-deletion">
+                            <div class="left-label ng-binding">
+                                删除应用
+                            </div>
+                            <div class="value">
+                                <button id="delete-app" th:data="${package.id}"
+                                        class="btn btn-danger btn-circle require-confirm">
+                                    <span class="ng-scope">删除</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <!--集成面板-->
                     <div id="app-integration-panel" class="providers ng-hide">

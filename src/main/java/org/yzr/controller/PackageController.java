@@ -53,7 +53,7 @@ public class PackageController {
     }
 
     //美居预览页
-    @GetMapping("/s/{code}/{env}/{bigV}")
+    @GetMapping("/app/{code}/{env}/{bigV}")
     public String getByEnv(@PathVariable("code") String code, @PathVariable("env") String env,
                            @PathVariable("bigV") String bigV, HttpServletRequest request) {
         String id = request.getParameter("id");

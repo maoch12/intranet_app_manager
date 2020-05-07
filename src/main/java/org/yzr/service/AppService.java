@@ -66,8 +66,11 @@ public class AppService {
         App app = this.appDao.get(aPackage.getBundleID(), aPackage.getPlatform());
         if (app == null) {
             app = new App();
+            String shortCode = CodeGenerator.generate(4);
+            while (this.appDao.findByShortCode(shortCode) != null) {
+                shortCode = CodeGenerator.generate(4);
+            }
             BeanUtils.copyProperties(aPackage, app);
-            String shortCode = app.getPlatform();
             app.setShortCode(shortCode);
         } else {
             app.setName(aPackage.getName());
@@ -112,18 +115,15 @@ public class AppService {
     @Transactional
     public AppViewModel findPackageByEnvAndBigV(String code, Package aPackage) {
         App app = this.appDao.findByShortCode(code);
-//        if (app != null) {
-            AppViewModel viewModel = new AppViewModel(app, pathManager, aPackage);
-            return viewModel;
-//        }
-//        return null;
+        AppViewModel viewModel = new AppViewModel(app, pathManager, aPackage);
+        return viewModel;
     }
 
     @Transactional
-    public AppViewModel findPackagesByEnvAndBigv(String code,List<Package> packages,Package topPackage){
-        App app=this.appDao.findByShortCode(code);
-        if (app!=null){
-            AppViewModel viewModel=new AppViewModel(app,pathManager,packages,topPackage);
+    public AppViewModel findPackagesByEnvAndBigv(String code, List<Package> packages, Package topPackage) {
+        App app = this.appDao.findByShortCode(code);
+        if (app != null) {
+            AppViewModel viewModel = new AppViewModel(app, pathManager, packages, topPackage);
             return viewModel;
         }
         return null;
