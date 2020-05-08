@@ -58,7 +58,9 @@ public class AppViewModel {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
+        //ios获取不到icon，不明白，改成读取绝对路径吧
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(app.getCurrentPackage()) + "log.txt");
         Package aPackage = findPackageById(app, null);
         this.version = aPackage.getVersion();
@@ -68,7 +70,7 @@ public class AppViewModel {
         this.shortCode = app.getShortCode();
         this.name = app.getName();
         this.bundleName =app.getBundleName();
-        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleName()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleName()+"/"  + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
         if (loadList) {
@@ -82,6 +84,7 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
+//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(app.getCurrentPackage()) + "log.txt");
         Package aPackage = findPackageById(app, packageId);
         this.version = aPackage.getVersion();
@@ -91,7 +94,7 @@ public class AppViewModel {
         this.shortCode = app.getShortCode();
         this.name = app.getName();
         this.bundleName =app.getBundleName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleName()+"/"+ app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleName()+"/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }
@@ -101,6 +104,8 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(topPackge) + "icon.png";
+
+//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(topPackge) + "log.txt");
         this.version = topPackge.getVersion();
         this.bigVersion = topPackge.getBigVersion();
@@ -109,7 +114,7 @@ public class AppViewModel {
         this.shortCode = app.getShortCode();
         this.name = app.getName();
         this.bundleName =app.getBundleName();
-        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleName()+"/"+ app.getPlatform() + "/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/" +app.getBundleName()+"/" + topPackge.getEnvironment() + "/" + topPackge.getBigVersion() + "/";
         this.minVersion = topPackge.getMinVersion();
         this.currentPackage = new PackageViewModel(topPackge, pathManager);
         this.packageList = sortPackages(packages, pathManager);
@@ -121,6 +126,7 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(aPackage) + "icon.png";
+//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(aPackage) + "log.txt");
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();
@@ -129,7 +135,7 @@ public class AppViewModel {
         this.shortCode = app.getShortCode();
         this.name = app.getName();
         this.bundleName =app.getBundleName();
-        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleName()+"/" + app.getPlatform() + "/" + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
+        this.installPath = pathManager.getBaseURL(false) + "app/"+app.getBundleName()+"/"  + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "/";
         this.minVersion = aPackage.getMinVersion();
         this.currentPackage = new PackageViewModel(aPackage, pathManager);
     }

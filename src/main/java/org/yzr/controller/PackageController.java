@@ -56,13 +56,13 @@ public class PackageController {
     }
 
     //美居预览页
-    @GetMapping("/app/{bundleName}/{platfrom}/{env}/{bigV}")
-    public String getByEnv(@PathVariable("bundleName") String bundleName, @PathVariable("platfrom") String platfrom,
+    @GetMapping("/app/{bundleName}/{env}/{bigV}")
+    public String getByEnv(@PathVariable("bundleName") String bundleName,
                            @PathVariable("env") String env, @PathVariable("bigV") String bigV,
                            HttpServletRequest request) {
         String boundId = transferToBoundId(bundleName);
         String id = request.getParameter("id");
-        App app = this.appService.findApp(boundId, platfrom);
+        App app = this.appService.findApp(boundId);
         Package aPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app, bigV, env, id);
         AppViewModel viewModel = this.appService.findPackageByEnvAndBigV(app, aPackage);
         request.setAttribute("app", viewModel);
@@ -73,12 +73,12 @@ public class PackageController {
     }
 
     //历史版本列表页
-    @GetMapping("/apps/{boundName}/{platfrom}/{env}/{bigV}")
-    public String getAppsByEnv(@PathVariable("boundName") String boundName, @PathVariable("platfrom") String platfrom,
+    @GetMapping("/apps/{boundName}/{env}/{bigV}")
+    public String getAppsByEnv(@PathVariable("boundName") String boundName,
                                @PathVariable("env") String env, @PathVariable("bigV") String bigV,
                                HttpServletRequest request) {
         String boundId = transferToBoundId(boundName);
-        App app = this.appService.findApp(boundId, platfrom);
+        App app = this.appService.findApp(boundId);
         List<Package> packageList = this.packageService.findPackageListByEnvAndBigv(app, bigV, env);
         Package topPackage = this.packageService.findTopPackageByEnvAndBigVOrPackageId(app, bigV, env, "");
         AppViewModel appViewModel = this.appService.findPackagesByEnvAndBigv(app, packageList, topPackage);

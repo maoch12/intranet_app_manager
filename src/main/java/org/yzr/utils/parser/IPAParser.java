@@ -36,11 +36,6 @@ public class IPAParser implements PackageParser {
             File ipaFile = new File(filePath);
             long currentTimeMillis = System.currentTimeMillis();
 
-//            NSDictionary icons=(NSDictionary) infoPlist.valueForKeyPath("CFBundleIcons");
-//            NSDictionary icon=(NSDictionary) icons.get("CFBundlePrimaryIcon");
-//            String environment= icon.get("CFBundleIconName").toString().toLowerCase().split("-")[1];
-//            aPackage.setEnvironment(environment);
-
             aPackage.setSize(ipaFile.length());
             aPackage.setName(infoPlist.stringValueForPath("CFBundleDisplayName"));
             if (aPackage.getName() == null) {
@@ -66,9 +61,9 @@ public class IPAParser implements PackageParser {
             String iconName = infoPlist.stringValueForKeyPath("CFBundleIcons.CFBundlePrimaryIcon.CFBundleIconName");
             if (iconName == null) {
                 iconName = infoPlist.stringValueForKeyPath("CFBundleIconFile");
-                String environment= iconName.toLowerCase().split("-")[1];
-                aPackage.setEnvironment(environment);
             }
+            String environment= iconName.toLowerCase().split("-")[1];
+            aPackage.setEnvironment(environment);
 
             String iconPath = appIcon(appPath, iconName);
             String iconTempPath = PathManager.getTempIconPath(aPackage);

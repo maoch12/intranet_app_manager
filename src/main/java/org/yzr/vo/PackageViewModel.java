@@ -44,6 +44,7 @@ public class PackageViewModel {
     public PackageViewModel(Package aPackage, PathManager pathManager) {
         this.downloadURL = pathManager.getBaseURL(false) + "p/" + aPackage.getId();
         this.safeDownloadURL = pathManager.getBaseURL(true) + "p/" + aPackage.getId();
+        //mac机上没有获取到icon，不知道为啥：
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
         String logPath = PathManager.getFullPath(aPackage) + "log.txt";
         try {
@@ -77,8 +78,7 @@ public class PackageViewModel {
             this.installURL = pathManager.getPackageResourceURL(aPackage, false) + aPackage.getFileName();
         }
         this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getBundleName() + "/"
-                + aPackage.getPlatform() + "/" + aPackage.getEnvironment() + "/"
-                + aPackage.getBigVersion() + "?id=" + aPackage.getId();
+               + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "?id=" + aPackage.getId();
         if (this.isIOS()) {
             if (aPackage.getProvision() == null) {
                 this.type = "内测版";

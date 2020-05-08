@@ -129,7 +129,7 @@ public class AppService {
     }
 
     @Transactional
-    public App findApp(String bundleId, String platfrom){
-        return this.appDao.findAppByBundleIDAndAndPlatform(bundleId,platfrom);
+    public App findApp(String bundleId){
+        return this.appDao.findAppByBundleID(bundleId);
     }
 }

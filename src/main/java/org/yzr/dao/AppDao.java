@@ -24,5 +24,5 @@ public interface AppDao extends CrudRepository<App, String> {
     @Query("select a from App a where a.id=:id")
     public Optional<App> findById(@Param("id") String id);
 
-    App findAppByBundleIDAndAndPlatform(String bundleId,String platfrom);
+    App findAppByBundleID(String bundleId);
 }

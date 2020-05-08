@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.yzr.service.AppService;
 import org.yzr.utils.PathManager;
 import org.yzr.vo.AppViewModel;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
