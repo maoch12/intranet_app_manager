@@ -26,13 +26,12 @@ public class AppService {
     public App save(App app) {
         App app1 = this.appDao.save(app);
         app1.getCurrentPackage();
-        try {
-            // 触发级联查询
-            app1.getWebHookList().forEach(webHook -> {
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            // 触发级联查询
+////            app1.getWebHookList().forEach(webHook -> { });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return app1;
     }
 

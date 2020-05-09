@@ -58,9 +58,7 @@ public class AppViewModel {
         this.id = app.getId();
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
-        //ios获取不到icon，不明白，改成读取绝对路径吧
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
-//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(app.getCurrentPackage()) + "log.txt");
         Package aPackage = findPackageById(app, null);
         this.version = aPackage.getVersion();
@@ -84,7 +82,6 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(app.getCurrentPackage()) + "icon.png";
-//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(app.getCurrentPackage()) + "log.txt");
         Package aPackage = findPackageById(app, packageId);
         this.version = aPackage.getVersion();
@@ -104,8 +101,6 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(topPackge) + "icon.png";
-
-//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(topPackge) + "log.txt");
         this.version = topPackge.getVersion();
         this.bigVersion = topPackge.getBigVersion();
@@ -126,7 +121,6 @@ public class AppViewModel {
         this.platform = app.getPlatform();
         this.bundleID = app.getBundleID();
         this.icon = PathManager.getRelativePath(aPackage) + "icon.png";
-//        this.icon=PathManager.getFullPath(app.getCurrentPackage()) +"icon.png";
         this.log = findLogText(PathManager.getFullPath(aPackage) + "log.txt");
         this.version = aPackage.getVersion();
         this.bigVersion = aPackage.getBigVersion();

@@ -199,10 +199,11 @@ public class PackageController {
             if (file.exists()) { //判断文件父目录是否存在
                 response.setContentType("application/force-download");
                 // 文件名称转换
-                String fileName = aPackage.getName() + "_" + aPackage.getVersion();
-                String ext = "." + FilenameUtils.getExtension(aPackage.getFileName());
-                String appName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
-                response.setHeader("Content-Disposition", "attachment;fileName=" + appName + ext);
+//                String fileName = aPackage.getName() + "_" + aPackage.getVersion();
+//                String ext = "." + FilenameUtils.getExtension(aPackage.getFileName());
+//                String appName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
+//                response.setHeader("Content-Disposition", "attachment;fileName=" + appName + ext);
+                response.setHeader("Content-Disposition", "attachment;fileName=" + aPackage.getFileName());
 
                 byte[] buffer = new byte[1024];
                 OutputStream os = response.getOutputStream();

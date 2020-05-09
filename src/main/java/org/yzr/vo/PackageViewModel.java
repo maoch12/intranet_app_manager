@@ -77,7 +77,7 @@ public class PackageViewModel {
             this.iOS = false;
             this.installURL = pathManager.getPackageResourceURL(aPackage, false) + aPackage.getFileName();
         }
-        this.previewURL = pathManager.getBaseURL(false) + "s/" + aPackage.getApp().getBundleName() + "/"
+        this.previewURL = pathManager.getBaseURL(false) + "app/" + aPackage.getApp().getBundleName() + "/"
                + aPackage.getEnvironment() + "/" + aPackage.getBigVersion() + "?id=" + aPackage.getId();
         if (this.isIOS()) {
             if (aPackage.getProvision() == null) {
