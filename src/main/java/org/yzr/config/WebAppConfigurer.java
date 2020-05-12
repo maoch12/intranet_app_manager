@@ -18,9 +18,11 @@ public class WebAppConfigurer extends WebMvcConfigurationSupport {
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         try {
             String path = ResourceUtils.getURL("").getPath();
+            //使用jar包运行时候，需要使用file:
             String prefix = ResourceUtils.FILE_URL_PREFIX + path;
             String debug = environment.getProperty("config.debug");
             if (debug !=null && debug.equals("debug")) {
+                //使用idea直接run的时候，就需要使用classpath:/
                 prefix = "classpath:/";
             }
 
