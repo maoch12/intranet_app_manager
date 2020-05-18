@@ -38,6 +38,7 @@ public class PackageViewModel {
     private String type;
     private String log;
     private String bundleName;
+    private int count;
     private List<String> devices;
     private int deviceCount;
 
@@ -65,6 +66,7 @@ public class PackageViewModel {
         String displayTime = (new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(updateTime);
         this.displayTime = displayTime;
         this.bundleName=aPackage.getApp().getBundleName();
+        this.count=aPackage.getCount();
         if (aPackage.getPlatform().equals("ios")) {
             this.iOS = true;
             String url = pathManager.getBaseURL(true) + "m/" + aPackage.getId();

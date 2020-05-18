@@ -5,6 +5,7 @@ import net.glxn.qrgen.javase.QRCode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.env.Environment;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import org.yzr.vo.AppViewModel;
 import org.yzr.vo.PackageViewModel;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -170,6 +172,7 @@ public class PackageController {
             app.setCurrentPackage(aPackage);
             app.setBundleName(transferToBoundName(aPackage.getBundleID()));
             aPackage.setApp(app);
+            aPackage.setCount(0);
             app = this.appService.save(app);
             // URL
             String codeURL = this.pathManager.getBaseURL(false) + "p/code/" + app.getCurrentPackage().getId();
@@ -194,15 +197,12 @@ public class PackageController {
     public void download(@PathVariable("id") String id, HttpServletResponse response) {
         try {
             Package aPackage = this.packageService.get(id);
+            int count=aPackage.getCount();
             String path = PathManager.getFullPath(aPackage) + aPackage.getFileName();
             File file = new File(path);
             if (file.exists()) { //判断文件父目录是否存在
                 response.setContentType("application/force-download");
                 // 文件名称转换
-//                String fileName = aPackage.getName() + "_" + aPackage.getVersion();
-//                String ext = "." + FilenameUtils.getExtension(aPackage.getFileName());
-//                String appName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");
-//                response.setHeader("Content-Disposition", "attachment;fileName=" + appName + ext);
                 response.setHeader("Content-Disposition", "attachment;fileName=" + aPackage.getFileName());
 
                 byte[] buffer = new byte[1024];
@@ -213,13 +213,24 @@ public class PackageController {
                 while (i != -1) {
                     os.write(buffer);
                     i = bis.read(buffer);
+                    count++;
                 }
+                aPackage.setCount(count);
                 bis.close();
                 fis.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @PostMapping("/app/updateCount")
+    public void updateCount(@RequestParam("count") int count,
+                            @RequestParam("packageId") String packageId,
+                            HttpServletResponse response){
+        Package p=this.packageService.get(packageId);
+        p.setCount(count);
+        this.packageService.save(p);
     }
 
     /**

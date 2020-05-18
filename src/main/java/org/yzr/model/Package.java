@@ -41,6 +41,8 @@ public class Package {
     private String platform;
     // 文件名
     private String fileName;
+    //下载量
+    private int count;
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name="appId")
     private App app;
