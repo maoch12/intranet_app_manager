@@ -3,12 +3,12 @@ package org.yzr.vo;
 import lombok.Getter;
 import org.apache.commons.io.FileUtils;
 import org.yzr.model.Package;
+import org.yzr.service.PackageService;
 import org.yzr.utils.PathManager;
+import org.yzr.utils.ipa.PlistGenerator;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.annotation.Resource;
+import java.io.*;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -45,7 +45,6 @@ public class PackageViewModel {
     public PackageViewModel(Package aPackage, PathManager pathManager) {
         this.downloadURL = pathManager.getBaseURL(false) + "p/" + aPackage.getId();
         this.safeDownloadURL = pathManager.getBaseURL(true) + "p/" + aPackage.getId();
-        //mac机上没有获取到icon，不知道为啥：
         this.iconURL = pathManager.getPackageResourceURL(aPackage, true) + "icon.png";
         String logPath = PathManager.getFullPath(aPackage) + "log.txt";
         try {
@@ -103,4 +102,5 @@ public class PackageViewModel {
             this.type = "内测版";
         }
     }
+
 }

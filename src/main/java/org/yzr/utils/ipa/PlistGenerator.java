@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlistGenerator {
+
     public static void generate(PackageViewModel aPackage, String destPath) {
         try {
             Writer out = new FileWriter(new File(destPath));
@@ -27,7 +28,7 @@ public class PlistGenerator {
     /**
      * 生成 manifest
      * @param aPackage
-     * @param out
+     * @param out 输出
      */
     public static void generate(PackageViewModel aPackage, Writer out) {
         try {

@@ -138,6 +138,7 @@ public class PackageController {
             app.setBundleName(transferToBoundName(aPackage.getBundleID()));
             aPackage.setApp(app);
             app = this.appService.save(app);
+            savePlist(app.getCurrentPackage());
             // URL
             String codeURL = this.pathManager.getBaseURL(false) + "p/code/" + app.getCurrentPackage().getId();
             // 发送WebHook消息
@@ -174,6 +175,8 @@ public class PackageController {
             aPackage.setApp(app);
             aPackage.setCount(0);
             app = this.appService.save(app);
+            //如果是ios包，还需要生成plist文件
+            savePlist(app.getCurrentPackage());
             // URL
             String codeURL = this.pathManager.getBaseURL(false) + "p/code/" + app.getCurrentPackage().getId();
             // 发送WebHook消息
@@ -185,6 +188,16 @@ public class PackageController {
             e.printStackTrace();
         }
         return map;
+    }
+
+    private void savePlist(Package aPackage){
+        String packagePath = PathManager.getFullPath(aPackage);
+        String plistPath=packagePath + File.separator+"manifest.plist";
+        //如果是ios，则生成plist文件
+        PackageViewModel viewModel = new PackageViewModel(aPackage, this.pathManager);
+        if (viewModel!=null&&viewModel.isIOS()){
+            PlistGenerator.generate(viewModel,plistPath);
+        }
     }
 
     /**
@@ -242,6 +255,7 @@ public class PackageController {
     public void getManifest(@PathVariable("id") String id, HttpServletResponse response) {
         try {
             PackageViewModel viewModel = this.packageService.findById(id);
+
             if (viewModel != null && viewModel.isIOS()) {
                 response.setContentType("application/force-download");
                 response.setHeader("Content-Disposition", "attachment;fileName=manifest.plist");

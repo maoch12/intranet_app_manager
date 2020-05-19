@@ -10,6 +10,7 @@ import org.yzr.model.App;
 import org.yzr.model.Package;
 import org.yzr.utils.ImageUtils;
 import org.yzr.utils.PathManager;
+import org.yzr.utils.ipa.PlistGenerator;
 import org.yzr.utils.parser.ParserClient;
 import org.yzr.vo.AppViewModel;
 import org.yzr.vo.PackageViewModel;
@@ -64,6 +65,7 @@ public class PackageService {
             FileUtils.forceDelete(new File(tempIconPath));
             // 源文件
             FileUtils.forceDelete(new File(filePath));
+
 
         } catch (Exception e) {
             e.printStackTrace();
