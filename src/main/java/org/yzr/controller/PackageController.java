@@ -197,7 +197,7 @@ public class PackageController {
     public void download(@PathVariable("id") String id, HttpServletResponse response) {
         try {
             Package aPackage = this.packageService.get(id);
-            int count=aPackage.getCount();
+            int count = aPackage.getCount();
             String path = PathManager.getFullPath(aPackage) + aPackage.getFileName();
             File file = new File(path);
             if (file.exists()) { //判断文件父目录是否存在
@@ -225,12 +225,11 @@ public class PackageController {
     }
 
     @PostMapping("/app/updateCount")
-    public void updateCount(@RequestParam("count") int count,
-                            @RequestParam("packageId") String packageId,
-                            HttpServletResponse response){
-        Package p=this.packageService.get(packageId);
-        p.setCount(count);
-        this.packageService.save(p);
+    public void updateCount(@RequestParam("packageId") String packageId, HttpServletResponse response) {
+        Package aPackage = this.packageService.get(packageId);
+        int count = aPackage.getCount() + 1;
+        aPackage.setCount(count);
+        this.packageService.save(aPackage);
     }
 
     /**

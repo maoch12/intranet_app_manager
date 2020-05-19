@@ -96,16 +96,12 @@
 </div>
 <script type="application/javascript">
     $("#install").click(function () {
-        var appCount = [[${app.currentPackage.count}]];
         var packageId = $("#packageId").val();
-        console.log("下载前的计数", appCount);
         window.location.href = ($("#installURL").val());
-        appCount++;
-        console.log("下载后的计数", appCount);
         $.ajax({
             type: 'post',
             url: "../../../updateCount",
-            data: {"count": appCount, "packageId": packageId},
+            data: {"packageId": packageId},
             success: function (response) {
                 console.log("更新数据库成功");
             }
