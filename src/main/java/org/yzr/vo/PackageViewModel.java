@@ -68,6 +68,7 @@ public class PackageViewModel {
         this.count=aPackage.getCount();
         if (aPackage.getPlatform().equals("ios")) {
             this.iOS = true;
+//            String url = pathManager.getBaseURL(true) + "m/" + aPackage.getId();
             String url = pathManager.getPackageResourceURL(aPackage, true) + "manifest.plist";
             try {
                 this.installURL = "itms-services://?action=download-manifest&url=" + URLEncoder.encode(url, "utf-8");
