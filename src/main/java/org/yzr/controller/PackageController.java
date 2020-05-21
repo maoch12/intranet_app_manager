@@ -238,6 +238,10 @@ public class PackageController {
         }
     }
 
+    /**
+     *  统计下载量；下载一次，计数器加1
+     * @param packageId 下载的包
+     */
     @PostMapping("/app/updateCount")
     public void updateCount(@RequestParam("packageId") String packageId, HttpServletResponse response) {
         Package aPackage = this.packageService.get(packageId);
