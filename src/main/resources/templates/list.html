@@ -115,7 +115,13 @@
                                         <small class="ng-scope">[[${app.type}]]</small>
                                         <i class="ng-hide">&nbsp;&nbsp;·&nbsp;&nbsp;</i>
                                         <small class="ng-binding ng-hide"></small>
-                                        <pre style="white-space: pre-wrap" >[[${app.log}]]</pre>
+                                        <div class="log-control">
+                                            <a>
+                                                <span class="sh-btn">展开</span>
+                                                <i class="down"></i>
+                                            </a>
+                                        </div>
+                                        <pre class="log_content">[[${app.log}]]</pre>
                                     </div>
                                     <div class="release-actions">
                                         <button class="tooltip-top download-action" tooltip="下载原文件"
@@ -244,5 +250,6 @@
     </div>
 </section>
 <script type="text/javascript" th:src="@{/js/list.js}"></script>
+
 </body>
 </html>

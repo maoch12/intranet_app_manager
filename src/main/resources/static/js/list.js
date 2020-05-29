@@ -202,4 +202,25 @@ $(function () {
         resetForm();
         $("#webhook-form-view").removeClass("ng-hide");
     });
+
+    $('.log_content').each(function(){
+        if(106 >= $(this).height()){
+            $(this).prev('.log-control').css('display', 'none');
+        }else{
+            $(this).css("height","106px");
+        }
+    });
+
+    $('.log-control').click(function () {
+        var htm = $(this).find('.sh-btn').html();
+        if (htm == "展开") {
+            $(this).find('.sh-btn').html('收起');
+            $(this).find('i').removeClass('down').addClass('up');
+            $(this).next('.log_content').css('height', 'auto')
+        } else {
+            $(this).find('.sh-btn').html('展开');
+            $(this).find('i').removeClass('up').addClass('down');
+            $(this).next('.log_content').css('height', '106px');
+        }
+    });
 });

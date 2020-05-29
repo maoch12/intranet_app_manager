@@ -1145,3 +1145,32 @@ body {
 .apps-app-info .middle-wrapper input {
     background-color: #f6f6f6
 }
+
+
+.down {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-top-color: red;
+}
+
+.up {
+    width:0px;
+    height:0px;
+    vertical-align: middle;
+    display: inline-block;
+    border-left:5px solid transparent;  /* 右透明 */
+    border-right:5px solid transparent; /*右透明 */
+    border-bottom:5px solid red; /* 定义底部颜色 */
+}
+
+.sh-btn{
+    font-size: small;
+}
+
+.log_content{
+    white-space: pre-wrap;
+    margin-top: 3px;
+}
