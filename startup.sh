@@ -18,9 +18,9 @@ is_exist(){
  pid=`ps -ef|grep $project_jar|grep -v grep|awk '{print $2}' `
  #如果不存在返回1，存在返回0
  if [ -z "${pid}" ]; then
- return 1
+     return 1
  else
- return 0
+     return 0
  fi
 }
 
@@ -28,21 +28,22 @@ is_exist(){
 start(){
  is_exist
  if [ $? -eq "0" ]; then
- echo "${project_name} is already running. Pid is ${pid}."
+     echo "${project_name} is already running. Pid is ${pid}."
  else
- echo "${project_name} Start."
- nohup java -jar  $project_path/$project_jar > $project_path/$project_log 2>&1 &
+     echo "${project_name} Start."
+     nohup java -jar  $project_path/$project_jar > $project_path/$project_log 2>&1 &
  fi
 }
 
 #停止
 stop(){
  is_exist
+
  if [ $? -eq "0" ]; then
- echo "${project_name} Stop."
- kill -15 $pid
+     echo "${project_name} Stop."
+     kill -15 $pid
  else
- echo "${project_name} is not running."
+     echo "${project_name} is not running."
  fi
 }
 
@@ -50,9 +51,9 @@ stop(){
 status(){
  is_exist
  if [ $? -eq "0" ]; then
- echo "${project_name} is running. Pid is ${pid}."
+     echo "${project_name} is running. Pid is ${pid}."
  else
- echo "${project_name} is not running."
+     echo "${project_name} is not running."
  fi
 }
 
