@@ -7,6 +7,8 @@ project_path=$(cd `dirname $0`; pwd)
 project_jar="${project_name}.jar"
 project_log="${project_name}.log"
 
+#这个命令也可以kill掉
+#ps -ef|grep $project_jar|grep -v grep|awk '{print $2}'|xargs kill -9
 
 usage() {
  echo "Usage: sh $0 [start|stop|restart|status]"
